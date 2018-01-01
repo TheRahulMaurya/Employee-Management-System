@@ -1,0 +1,11 @@
+build*
+manifest.mf
+nbproject*
+src.tar*
+
+*.py[cod]
+> .DS_Store
+> __pycache__/
+> *.py[cod]
+> *.class
+> 
