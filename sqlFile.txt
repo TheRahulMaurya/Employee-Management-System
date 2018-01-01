@@ -1,0 +1,84 @@
+------TABLE EMPLOYEE------------
+
+
+create table employee577
+(
+	emp_id number(10) primary key,
+	name varchar2(10),
+	email varchar2(20),
+	phone number(15),
+	gender varchar2(8),
+	department varchar2(10),
+	dob date,
+	address varchar2(15),
+	doj date,
+	salary number(10),
+	image blob
+);
+
+
+------------TABLE PROJECT-----------------
+
+create table project32
+    (
+    p_id number(5) primary key, 
+    pname varchar2(10)
+    );
+
+
+------------TABLE WORK_ON----------------
+
+create table work_on
+    (emp_id number(10) not null,
+    p_id number(5),
+    constraint emp_fk foreign key (emp_id)
+    references employee32(emp_id),
+    constraint p_fk foreign key (p_id)
+    references project32(p_id)
+    );
+
+
+-----create sequence in oracle for autoincreament------------
+
+	Create sequence p_sequence start with 1
+	increment by 1
+	minvalue 1
+	maxvalue 10000;
+	
+	insert into emp (emp_id,fname,lname) values(emp_sequence.nextval,'Darvin','Johnson');
+
+
+
+
+------create procedure for update -------------
+
+	create or replace procedure update_employee32(
+	empl_id in employee32.emp_id%type,
+	prjname in project32.pname%type)
+	is
+	begin
+	declare
+	n number :=0;
+	begin
+	select count(*) into n from project32 where pname=prjname;
+	if (n = 0) then
+	insert into project32 values(p_sequence.nextval,prjname);
+	end if;
+	update work_on set p_id=(select p_id from project32 where pname=prjname and rownum=1) where emp_id=empl_id;
+	end;
+	end;
+	/
+
+
+------create after_delete Trigger on employee32 table
+
+	create or replace trigger employee_after_delete
+	after delete
+	on employee32
+	REFERENCING OLD AS old NEW AS new
+	for each row
+	begin
+	delete from work_on where emp_id= :old.emp_id;
+	end;
+	/
+	
