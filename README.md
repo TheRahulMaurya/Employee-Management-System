@@ -8,6 +8,6 @@
 
 IDE--Netbeans IDE
 
-Technology--JAVA(jdk1.8),Spring
+Technology--JAVA(jdk1.8),Swing
 
 Backend--oracle 11g
